@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Include Tailwind CSS CDN */}
+      
         <script src="https://cdn-tailwindcss.vercel.app?plugins=forms"></script>
       </head>
       <body

@@ -13,6 +13,9 @@ const Home = () => {
             <li className="mt-2">
                 <Link href='/route-handlers-demo'>Route Handles Demo</Link>
             </li>
+            <li className="mt-2">
+                <Link href='/rendering-demo'>Rendering Demo</Link>
+            </li>
         </ul>
     </>
 
