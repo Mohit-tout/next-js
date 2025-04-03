@@ -1,4 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 @import "tailwindcss";
+
+
+@layer utilities {
+  .hover\:w-inherit:hover {
+    width: inherit !important;
+  }
+}
 
 :root {
   --background: #ffffff;
@@ -19,6 +29,17 @@
   }
 }
 
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 3s infinite ease-in-out;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -32,4 +53,7 @@ body {
 
 .gradient {
   background: linear-gradient(90deg, #d53369 0%, #daae51 100%);
+}
+.slick-next ,.slick-prev{
+  display: none !important;
 }

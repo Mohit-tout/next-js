@@ -1,8 +1,6 @@
-import { LogInForm } from "@/components/LogInForm";
-export const dynamic = "force-dynamic"; // Ensures SSR
+import { AuthForm } from "@/components/AuthForm";
 export default async function LoginInPage() {
-
     return <>
-    <LogInForm/>
+        <AuthForm />
     </>
 }
