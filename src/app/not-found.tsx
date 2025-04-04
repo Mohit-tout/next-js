@@ -8,7 +8,6 @@ export default function NotFoundPage() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-gray-100">
       <div className="text-center animate-fadeIn">
-        {/* 404 Illustration */}
         <Image
           src="https://yemca-services.net/404.png" // Replace with a valid image path in the public folder
           alt="404 Illustration"

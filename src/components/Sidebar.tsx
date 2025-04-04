@@ -1,9 +1,8 @@
-
 "use client";
 import React, { useState } from "react";
 import { LogoImageForBg } from "@/assets";
 import Image from "next/image";
-import { LogOut, Menu, X, Grid,  FileText, Clock, Book, Settings, Users, User, ClipboardCheck } from "lucide-react";
+import { LogOut, Menu, X, Grid,  FileText, Clock, Book, Users, User, ClipboardCheck } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const menuItems = [
