@@ -1,7 +1,5 @@
 "use client";
 
-import ProtectedRoute from "../protected-route";
-
 const AdminDashboard = () => {
   return (<>
   <h1 className="text-2xl font-bold">Welcome to Admin Dashboard</h1>

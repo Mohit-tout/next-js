@@ -22,7 +22,7 @@ export const signUp = async (email: string, password: string, name: string) => {
         const updatedUser = { ...user, password: undefined }
 
         return { message: "User registered successfully !!!", user: updatedUser };
-    } catch (error) {
+    } catch {
         return { error: "Registration failed!" };
     }
 };

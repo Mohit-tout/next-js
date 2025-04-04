@@ -11,7 +11,7 @@ export default function StartLook() {
                     Manage Tasks Efficiently & Boost Productivity
                 </h1>
                 <p className="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
-                    Stay organized and get more done with our powerful task management tool. Plan, track, and collaborate seamlessly—whether you're working solo or with a team.
+                    Stay organized and get more done with our powerful task management tool. Plan, track, and collaborate seamlessly—whether you&apos;re working solo or with a team.
                 </p>
                 <p className="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
                     Take control of your workflow with our intuitive platform. Assign tasks, set priorities, track progress, and meet deadlines effortlessly.

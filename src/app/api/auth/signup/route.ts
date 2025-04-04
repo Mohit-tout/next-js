@@ -14,7 +14,7 @@ export const POST = async (request: Request) => {
     return new Response(JSON.stringify(response), { status: 200 });
   }
   catch (err) {
-    return new Response(JSON.stringify({ message: 'Internal Server Error !!!' }), { status: 500 })
+    return new Response(JSON.stringify({ message: 'Internal Server Error !!!',error:err }), { status: 500 })
   }
 
 }

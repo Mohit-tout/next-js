@@ -4,6 +4,7 @@ import React from "react";
 import Slider from 'react-slick'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { UserRound } from "lucide-react";
 
 const Testimonials: React.FC = () => {
     const settings = {
@@ -21,50 +22,43 @@ const Testimonials: React.FC = () => {
                 "This task management tool has transformed how we organize our projects. Highly recommended!",
             name: "John Doe",
             role: "Project Manager at XYZ Corp",
-            image: "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png",
         },
         {
             quote:
                 "A must-have tool for productivity. The seamless integration with our workflow is outstanding!",
             name: "Sarah Lee",
             role: "CEO at ABC Solutions",
-            image: "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png",
         },
         {
             quote:
                 "An excellent platform that has streamlined our team's workflow and collaboration.",
             name: "Emily Johnson",
             role: "Team Lead at Tech Innovators",
-            image: "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png",
         },
         {
             quote:
                 "Our company saw a significant boost in productivity after implementing this tool. Absolutely worth it!",
             name: "David Smith",
             role: "Operations Manager at Global Solutions",
-            image: "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png",
         },
         {
             quote:
                 "A user-friendly and efficient tool that helps us stay on top of our tasks effortlessly.",
             name: "Sophia Martinez",
             role: "Marketing Director at Bright Future Inc.",
-            image: "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png",
         },
         {
             quote:
                 "This platform has made remote work a breeze, allowing seamless communication and task management.",
             name: "James Wilson",
             role: "Remote Team Coordinator at WorkFlex",
-            image: "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png",
         },
         {
             quote:
                 "We've integrated this tool across all departments, and the results have been outstanding!",
             name: "Olivia Brown",
             role: "Chief Strategy Officer at Enterprise Solutions",
-            image: "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png",
-        }
+        },
     ];
 
 
@@ -88,15 +82,11 @@ const Testimonials: React.FC = () => {
                                 </svg>
                                 <blockquote>
                                     <p className="text-xl font-medium text-gray-900 md:text-2xl dark:text-white">
-                                        "{testimonial.quote}"
+                                        &quot;{testimonial.quote}&quot;
                                     </p>
                                 </blockquote>
                                 <figcaption className="flex items-center justify-center mt-6 space-x-3">
-                                    <img
-                                        className="w-10 h-10 rounded-full"
-                                        src={testimonial.image}
-                                        alt={testimonial.name}
-                                    />
+                                    <UserRound className="w-10 h-10 text-gray-600 dark:text-gray-300 rounded-full bg-white p-1 border" />
                                     <div className="flex items-center divide-x-2 divide-gray-500 dark:divide-gray-700">
                                         <div className="pr-3 font-medium text-gray-900 dark:text-white">
                                             {testimonial.name}

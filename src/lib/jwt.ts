@@ -20,7 +20,7 @@ export function generateRefreshToken(user: UserPayload): string {
 export function verifyToken(token: string, isRefreshToken = false): UserPayload | null {
     try {
         return jwt.verify(token, isRefreshToken ? REFRESH_TOKEN_SECRET : ACCESS_TOKEN_SECRET) as UserPayload;
-    } catch (error) {
+    } catch  {
         return null;
     }
 }

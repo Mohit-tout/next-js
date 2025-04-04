@@ -1,6 +1,7 @@
 import { LogoImage } from "@/assets";
 import { Facebook, Globe, Instagram, Linkedin } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Footer() {
 
@@ -25,7 +26,7 @@ export default function Footer() {
 
             <ul className="flex justify-center gap-6 mt-8 md:gap-8 sm:justify-start">
               <li>
-                <a
+                <Link
                   href="https://www.facebook.com/throughouttechnologies/"
                   rel="noopener noreferrer"
                   target="_blank"
@@ -33,11 +34,11 @@ export default function Footer() {
                 >
                   <span className="sr-only">Facebook</span>
                   <Facebook />
-                </a>
+                </Link>
               </li>
 
               <li>
-                <a
+                <Link
                   href="https://www.instagram.com/throughout_technologies/"
                   rel="noopener noreferrer"
                   target="_blank"
@@ -45,11 +46,11 @@ export default function Footer() {
                 >
                   <span className="sr-only">Instagram</span>
                   <Instagram />
-                </a>
+                </Link>
               </li>
 
               <li>
-                <a
+                <Link
                   href="https://www.linkedin.com/company/throughouttechnologiespvt.ltd./?originalSubdomain=in"
                   rel="noopener noreferrer"
                   target="_blank"
@@ -57,11 +58,11 @@ export default function Footer() {
                 >
                   <span className="sr-only">Linkedin</span>
                   <Linkedin />
-                </a>
+                </Link>
               </li>
 
               <li>
-                <a
+                <Link
                   href="https://throughouttechnologies.com/"
                   rel="noopener noreferrer"
                   target="_blank"
@@ -69,7 +70,7 @@ export default function Footer() {
                 >
                   <span className="sr-only">Website</span>
                   <Globe />
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -83,39 +84,39 @@ export default function Footer() {
               <nav className="mt-8">
                 <ul className="space-y-4 text-sm">
                   <li>
-                    <a className="text-white transition hover:text-white/75" href="/">
+                    <Link className="text-white transition hover:text-white/75" href="/">
                       About Us
-                    </a>
+                    </Link>
                   </li>
 
                   <li>
-                    <a className="text-white transition hover:text-white/75" href="/">
+                    <Link className="text-white transition hover:text-white/75" href="/">
                       Our Mission
-                    </a>
+                    </Link>
                   </li>
 
                   <li>
-                    <a className="text-white transition hover:text-white/75" href="/">
+                    <Link className="text-white transition hover:text-white/75" href="/">
                       How It Works
-                    </a>
+                    </Link>
                   </li>
 
                   <li>
-                    <a className="text-white transition hover:text-white/75" href="/">
+                    <Link className="text-white transition hover:text-white/75" href="/">
                       Meet the Team
-                    </a>
+                    </Link>
                   </li>
 
                   <li>
-                    <a className="text-white transition hover:text-white/75" href="/">
+                    <Link className="text-white transition hover:text-white/75" href="/">
                       User Guide
-                    </a>
+                    </Link>
                   </li>
 
                   <li>
-                    <a className="text-white transition hover:text-white/75" href="/">
+                    <Link className="text-white transition hover:text-white/75" href="/">
                       Careers
-                    </a>
+                    </Link>
                   </li>
                 </ul>
 
@@ -128,39 +129,39 @@ export default function Footer() {
               <nav className="mt-8">
                 <ul className="space-y-4 text-sm">
                   <li>
-                    <a className="text-white transition hover:text-white/75" href="/">
+                    <Link className="text-white transition hover:text-white/75" href="/">
                       Task Scheduling
-                    </a>
+                    </Link>
                   </li>
 
                   <li>
-                    <a className="text-white transition hover:text-white/75" href="/">
+                    <Link className="text-white transition hover:text-white/75" href="/">
                       Team Collaboration
-                    </a>
+                    </Link>
                   </li>
 
                   <li>
-                    <a className="text-white transition hover:text-white/75" href="/">
+                    <Link className="text-white transition hover:text-white/75" href="/">
                       Time Tracking
-                    </a>
+                    </Link>
                   </li>
 
                   <li>
-                    <a className="text-white transition hover:text-white/75" href="/">
+                    <Link className="text-white transition hover:text-white/75" href="/">
                       Project Management
-                    </a>
+                    </Link>
                   </li>
 
                   <li>
-                    <a className="text-white transition hover:text-white/75" href="/">
+                    <Link className="text-white transition hover:text-white/75" href="/">
                       Workflow Automation
-                    </a>
+                    </Link>
                   </li>
 
                   <li>
-                    <a className="text-white transition hover:text-white/75" href="/">
+                    <Link className="text-white transition hover:text-white/75" href="/">
                       Reporting & Analytics
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </nav>
@@ -173,25 +174,25 @@ export default function Footer() {
               <nav className="mt-8">
                 <ul className="space-y-4 text-sm">
                   <li>
-                    <a className="text-white transition hover:text-white/75" href="/">
+                    <Link className="text-white transition hover:text-white/75" href="/">
                       Help Center
-                    </a>
+                    </Link>
                   </li>
 
                   <li>
-                    <a className="text-white transition hover:text-white/75" href="/">
+                    <Link className="text-white transition hover:text-white/75" href="/">
                       User Documentation
-                    </a>
+                    </Link>
                   </li>
 
                   <li>
-                    <a className="text-white transition hover:text-white/75" href="/">
+                    <Link className="text-white transition hover:text-white/75" href="/">
                       Contact Support
-                    </a>
+                    </Link>
                   </li>
 
                   <li>
-                    <a className="flex group justify-center sm:justify-start gap-1.5" href="/">
+                    <Link className="flex group justify-center sm:justify-start gap-1.5" href="/">
                       <span className="text-white transition group-hover:text-white/75">
                         Live Chat
                       </span>
@@ -204,7 +205,7 @@ export default function Footer() {
                           className="relative inline-flex w-2 h-2 bg-teal-500 rounded-full"
                         ></span>
                       </span>
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </nav>
@@ -215,7 +216,7 @@ export default function Footer() {
               <p className="text-lg font-medium text-white">Contact Us</p>
               <ul className="mt-8 space-y-4 text-sm">
                 <li>
-                  <a
+                  <Link
                     className="flex items-center justify-center sm:justify-start gap-1.5 group"
                     href="mailto:support@throughouttasks.com"
                   >
@@ -237,11 +238,11 @@ export default function Footer() {
                     <span className="text-white transition group-hover:text-white/75">
                       throughouttasks.com
                     </span>
-                  </a>
+                  </Link>
                 </li>
 
                 <li>
-                  <a
+                  <Link
                     className="flex items-center justify-center sm:justify-start gap-1.5 group"
                     href="tel:+18001234567"
                   >
@@ -263,7 +264,7 @@ export default function Footer() {
                     <span className="text-white transition group-hover:text-white/75">
                       +1 800 123 4567
                     </span>
-                  </a>
+                  </Link>
                 </li>
 
                 <li className="flex items-start justify-center gap-1.5 sm:justify-start">
@@ -302,21 +303,21 @@ export default function Footer() {
             <p className="text-sm text-gray-400">
               <span className="block sm:inline">All rights reserved.</span>
 
-              <a
+              <Link
                 className="inline-block text-teal-500 underline transition hover:text-teal-500/75"
                 href="/"
               >
                 Terms & Conditions
-              </a>
+              </Link>
 
               <span>&middot;</span>
 
-              <a
+              <Link
                 className="inline-block text-teal-500 underline transition hover:text-teal-500/75"
                 href="/"
               >
                 Privacy Policy
-              </a>
+              </Link>
             </p>
 
             <p className="mt-4 text-sm text-gray-500 sm:order-first sm:mt-0">

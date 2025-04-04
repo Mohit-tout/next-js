@@ -59,30 +59,48 @@ export const AuthForm = () => {
     return Object.values(newErrors).every((error) => error === undefined || error === "");
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validateForm()) return;
-
-    try {
-      const data = isSignUp ? await registerUser(formData) : await loginUser(formData);
-      toast.success(data?.message);
-      if (isSignUp) {
-        router.push("/login");
-      }
-      else {
-        localStorage.setItem('accessToken', data?.accessToken);
-        localStorage.setItem('refreshToken', data?.refreshToken);
-        localStorage.setItem('userId', data?.user?.id);
-        localStorage.setItem('role', 'admin');
-
-        router.push("/admin/dashboard");
-      }
-    } catch (error: any) {
-      console.log('ERROR -: ', error)
-      toast.error(error?.message || "Authentication failed!");
+  function formDataToObject(formData: FormData): Record<string, string> {
+    const obj: Record<string, string> = {};
+    for (const [key, value] of Array.from(formData.entries())) {
+      obj[key] = value.toString();
     }
-  };
+    return obj;
+  }
 
+// Inside your submit handler
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (!validateForm()) return;
+
+  try {
+    const plainObject = formDataToObject(formData);
+    const data = isSignUp
+      ? await registerUser(plainObject)
+      : await loginUser(plainObject);
+
+    toast.success(data?.message || "Success");
+
+    if (isSignUp) {
+      router.push("/login");
+    } else {
+      localStorage.setItem("accessToken", data?.accessToken);
+      localStorage.setItem("refreshToken", data?.refreshToken);
+      localStorage.setItem("userId", data?.user?.id);
+      localStorage.setItem("role", "admin");
+      router.push("/admin/dashboard");
+    }
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Error:", error.message);
+    } else {
+      console.error("Unexpected error:", error);
+    }
+  }
+};
+
+  
+  
+  
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">

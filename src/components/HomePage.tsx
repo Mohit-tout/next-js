@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function HomePage(){
 
     return<>
@@ -62,7 +64,7 @@ export default function HomePage(){
           </button>
         </div>
         <div className="w-full md:w-3/5 py-6 text-center">
-          <img className="w-full md:w-4/5 z-50" src="hero.png" />
+          <Image alt="home-page-hero-img" className="w-full md:w-4/5 z-50" src="hero.png" />
         </div>
       </div>
     </div>
