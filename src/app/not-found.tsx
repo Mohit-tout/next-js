@@ -17,10 +17,10 @@ export default function NotFoundPage() {
         />
 
         <h1 className="text-7xl font-extrabold text-blue-700 mt-6">
-          Looks Like You're Lost!
+          Looks Like You're Lost&apos;
         </h1>
         <p className="text-xl text-gray-700 mt-2">
-          We can't seem to find the page you're looking for.
+          We can&apos;t seem to find the page you&apos;re looking for.
         </p>
 
         {/* Return Home Button */}

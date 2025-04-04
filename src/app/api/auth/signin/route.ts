@@ -29,7 +29,7 @@ export const POST = async (request: Request) => {
       status: 200,
       headers: { "Set-Cookie": refreshTokenCookie }
     });
-  } catch (err) {
+  } catch  {
     return new Response(JSON.stringify({ message: "Internal Server Error" }), { status: 500 });
   }
 };
