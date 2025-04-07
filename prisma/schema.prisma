@@ -13,10 +13,90 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id       String @id @default(uuid())
-  name     String?
-  email    String @unique
-  password String
+model Organization {
+  id       String  @id @default(uuid())
+  name     String
+  users    User[]
+  projects Project[]
   createdAt DateTime @default(now())
+}
+
+model User {
+  id           String   @id @default(uuid())
+  profileImage String?
+  firstName    String
+  lastName     String
+  role         UserRole @default(EMPLOYEE)
+  email        String   @unique
+  password     String
+  phoneNumber  String?
+  gender       String?
+  dob          DateTime?
+  designation  String?
+  department   String?
+  
+  // Self Relations
+  teamLeader   User?     @relation("TeamLeader", fields: [teamLeaderId], references: [id])
+  teamLeaderId String?
+  teamMembers  User[]    @relation("TeamLeader")
+
+  manager      User?     @relation("Manager", fields: [managerId], references: [id])
+  managerId    String?
+  subordinates User[]    @relation("Manager")
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+
+  tasks      Task[]
+  createdAt  DateTime @default(now())
+}
+
+model Project {
+  id             String   @id @default(uuid())
+  name           String
+  description    String?
+  startDate      DateTime?
+  endDate        DateTime?
+  progress       Int      @default(0)
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+
+  tasks          Task[]
+  createdAt      DateTime @default(now())
+}
+
+model Task {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  status      TaskStatus @default(TODO)
+  priority    TaskPriority @default(MEDIUM)
+  dueDate     DateTime?
+  createdAt   DateTime @default(now())
+
+  assignedTo  User?   @relation(fields: [assignedToId], references: [id])
+  assignedToId String?
+
+  project     Project? @relation(fields: [projectId], references: [id])
+  projectId   String?
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum UserRole {
+  ADMIN
+  MANAGER
+  TEAM_LEADER
+  EMPLOYEE
 }

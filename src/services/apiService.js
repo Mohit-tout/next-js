@@ -23,7 +23,6 @@ export const apiService = async (url, method = 'GET', body) => {
         if (!response.ok) {
             throw new Error(data?.message || "Something went wrong!");
         }
-
         return data;
     } catch (err) {
         throw new Error(err?.message || "Request failed");

@@ -9,7 +9,7 @@ const ProtectedRoute = ({ children }) => {
     useEffect(() => {
         if (typeof window !== "undefined") {
             const accessToken = localStorage.getItem("accessToken");
-            const isAdmin = localStorage.getItem("role") === "admin";
+            const isAdmin = localStorage.getItem("role") === "EMPLOYEE";
 
             if (!accessToken || !isAdmin) {
                 router.push("/login");

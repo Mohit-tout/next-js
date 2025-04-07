@@ -1,7 +1,7 @@
 "use client";
-import Sidebar from "@/components/Sidebar";
 import ProtectedRoute from "./protected-route";
-import AdminHeader from "@/components/AdminHeader";
+import Sidebar from "../../components/Sidebar";
+import EmployeeHeader from "../../components/EmployeeHeader";
 
 const AdminLayout = ({ children }) => {
     return (
@@ -10,8 +10,8 @@ const AdminLayout = ({ children }) => {
                 <div className="h-screen flex overflow-hidden">
                     <Sidebar />
                     <div className="flex-1 flex-col relative z-0 overflow-y-auto">
-                        <AdminHeader />
-                        <div className="md:max-w-6xl md:mx-auto px-4 py-8">
+                        <EmployeeHeader />
+                        <div className="md:max-w-6xl md:mx-auto px-4 mt-[80px]">
                             {children}
                         </div>
                     </div>

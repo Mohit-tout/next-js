@@ -2,27 +2,33 @@
 import React, { useState } from "react";
 import { LogoImageForBg } from "@/assets";
 import Image from "next/image";
-import { LogOut, Menu, X, Grid,  FileText, Clock, Book, Users, User, ClipboardCheck } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { LogOut, Menu, X, Grid, FileText, Clock, Book, Users, User, ClipboardCheck } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
 
 const menuItems = [
-    { name: "Dashboard", icon: <Grid size={20} />, href: "/admin/dashboard" },
-    { name: "My Profile", icon: <User size={20} />, href: "/admin/profile" },
-    { name: "My Tasks", icon: <Clock size={20} />, href: "/admin/tasks" },
-    { name: "Team Tasks", icon: <ClipboardCheck size={20} />, href: "/admin/teamTask" }, // Updated icon
-    { name: "Team", icon: <Users size={20} />, href: "/admin/team" },
-    { name: "Projects", icon: <Book size={20} />, href: "/admin/projects" },
-    { name: "Reports & Analytics", icon: <FileText size={20} />, href: "/admin/reports" },
+    { name: "Dashboard", icon: <Grid size={20} />, href: "/employee/dashboard" },
+    { name: "My Profile", icon: <User size={20} />, href: "/employee/profile" },
+    { name: "My Tasks", icon: <Clock size={20} />, href: "/employee/tasks" },
+    { name: "Team Tasks", icon: <ClipboardCheck size={20} />, href: "/employee/teamTask" }, // Updated icon
+    { name: "Team", icon: <Users size={20} />, href: "/employee/team" },
+    { name: "Projects", icon: <Book size={20} />, href: "/employee/projects" },
+    { name: "Reports & Analytics", icon: <FileText size={20} />, href: "/employee/reports" },
 ];
 
 const Sidebar = () => {
     const [sidemenu, setSidemenu] = useState(false);
     const router = useRouter();
+    const pathName = usePathname();
 
     const handleLogoOutClick = (e) => {
         e.preventDefault();
         localStorage.clear();
         router.push('/')
+    }
+
+    const getActiveClassName = (path) => {
+        return pathName === path ? 'text-blue-600 bg-gray-100' : 'text-gray-700 hover:text-blue-600 hover:bg-gray-100'
     }
 
     return (
@@ -57,16 +63,16 @@ const Sidebar = () => {
                     <ul>
                         {menuItems.map((item, index) => (
                             <li key={index}>
-                                <a
+                                <Link
                                     href={item?.href}
-                                    className="flex items-center px-4 py-3 rounded-lg font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100"
+                                    className={`flex items-center px-4 py-3 rounded-lg font-medium ${getActiveClassName(item?.href)}`}
                                 >
                                     <span className="mr-4">  {item.icon} </span>
                                     {item.name}
-                                </a>
+                                </Link>
                             </li>
                         ))}
-                         <li className="absolute bottom-10">
+                        <li className="absolute bottom-10">
                             <button
                                 onClick={handleLogoOutClick}
                                 className="mb-1 px-2 py-2 w-full rounded-lg flex items-center font-medium text-gray-700 hover:text-blue-600 hover:w-inherit hover:bg-gray-200 focus:outline-none "
@@ -89,13 +95,13 @@ const Sidebar = () => {
                     <ul>
                         {menuItems.map((item, index) => (
                             <li key={index}>
-                                <a
-                                     href={item?.href}
-                                    className="flex items-center px-4 py-3 rounded-lg font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100"
+                                <Link
+                                    href={item?.href}
+                                    className={`flex items-center px-4 py-3 rounded-lg font-medium ${getActiveClassName(item?.href)}`}
                                 >
                                     <span className="mr-4">  {item.icon} </span>
                                     {item.name}
-                                </a>
+                                </Link>
                             </li>
 
                         ))}

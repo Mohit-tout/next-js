@@ -3,7 +3,7 @@ import { useState } from "react";
 import { LogoImageForBg } from "@/assets";
 import { useRouter } from "next/navigation";
 
-export default function AdminHeader() {
+export default function EmployeeHeader() {
     const router = useRouter();
     const [isSideMenuOpen, setSideMenuOpen] = useState(false);
     const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -15,7 +15,7 @@ export default function AdminHeader() {
     }
 
     return <>
-        <div className="px-4 md:px-8 py-2 h-16 flex justify-between items-center shadow-sm bg-white">
+        <div className="px-4 md:px-8 py-2 h-16 flex justify-between items-center shadow-sm bg-white fixed w-full z-[1000]">
             <div className="flex items-center w-2/3">
                 <input
                     className="bg-white border border-gray-300 rounded-lg focus:outline-none focus:shadow-outline focus:bg-white py-2 px-4 block w-full appearance-none leading-normal hidden md:block placeholder-gray-700 mr-10"
