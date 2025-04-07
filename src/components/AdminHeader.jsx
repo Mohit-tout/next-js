@@ -8,7 +8,7 @@ export default function AdminHeader() {
     const [isSideMenuOpen, setSideMenuOpen] = useState(false);
     const [isDropdownOpen, setDropdownOpen] = useState(false);
 
-    const handleLogoOutClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleLogoOutClick = (e) => {
         e.preventDefault();
         localStorage.clear();
         router.push('/')

@@ -2,8 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { generateAccessToken, generateRefreshToken } from "../jwt";
 import { comparePassword, hashPassword } from "../bcrypt";
 
-
-export const signUp = async (email: string, password: string, name: string) => {
+export const signUp = async (email, password, name) => {
     try {
         // Check if user already exists
         const existingUser = await prisma.user.findUnique({ where: { email } });
@@ -19,7 +18,8 @@ export const signUp = async (email: string, password: string, name: string) => {
                 name,
             },
         });
-        const updatedUser = { ...user, password: undefined }
+        const updatedUser = { ...user };
+        delete updatedUser.password;
 
         return { message: "User registered successfully !!!", user: updatedUser };
     } catch (error) {
@@ -27,7 +27,7 @@ export const signUp = async (email: string, password: string, name: string) => {
     }
 };
 
-export const signIn = async (email: string, password: string) => {
+export const signIn = async (email, password) => {
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) return { error: "User not found!" };
 
@@ -40,4 +40,3 @@ export const signIn = async (email: string, password: string) => {
 
     return { ...payload, accessToken, refreshToken };
 };
-

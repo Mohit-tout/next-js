@@ -1,6 +1,6 @@
 import { signUp } from "@/lib/services/auth";
 
-export const POST = async (request: Request) => {
+export const POST = async (request) => {
   try {
     const body = await request.json();
     if (!body?.email || !body?.password || !body?.name) {

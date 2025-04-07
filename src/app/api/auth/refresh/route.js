@@ -1,7 +1,7 @@
 import { verifyToken, generateAccessToken } from "@/lib/jwt";
 import { prisma } from "@/lib/prisma";
 
-export const POST = async (req: Request) => {
+export const POST = async (req) => {
   const cookies = req.headers.get("cookie") || "";
   const refreshToken = cookies.split("; ").find((c) => c.startsWith("refreshToken="))?.split("=")[1];
 

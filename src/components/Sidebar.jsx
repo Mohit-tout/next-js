@@ -19,7 +19,7 @@ const Sidebar = () => {
     const [sidemenu, setSidemenu] = useState(false);
     const router = useRouter();
 
-    const handleLogoOutClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleLogoOutClick = (e) => {
         e.preventDefault();
         localStorage.clear();
         router.push('/')

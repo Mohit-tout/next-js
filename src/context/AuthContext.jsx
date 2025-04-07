@@ -3,22 +3,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-interface User {
-    accessToken: string;
-    role: "admin" | "user";
-    userId: string;
-}
+const AuthContext = createContext(undefined);
 
-interface AuthContextType {
-    user: User | null;
-    login: (userData: User) => void;
-    logout: () => void;
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-    const [user, setUser] = useState<User | null>(null);
+export const AuthProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
     const router = useRouter();
 
     useEffect(() => {
@@ -28,12 +16,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             const userId = localStorage.getItem("userId");
 
             if (accessToken && role && userId) {
-                setUser({ accessToken, role: role as "admin" | "user", userId });
+                setUser({ accessToken, role, userId });
             }
         }
     }, []);
 
-    const login = (userData: User) => {
+    const login = (userData) => {
         setUser(userData);
         if (typeof window !== "undefined") {
             localStorage.setItem("accessToken", userData.accessToken);
