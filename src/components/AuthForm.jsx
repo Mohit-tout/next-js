@@ -1,13 +1,16 @@
+"use client";
+
 import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { usePathname,useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { loginUser, registerUser } from "@/services/auth";
 import { LogoImageForBg } from "@/assets";
 
 export const AuthForm = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const isSignUp = location.pathname === "/signup";
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const isSignUp = pathname === "/signup";
 
   const [formData, setFormData] = useState({
     name: "",
@@ -62,14 +65,14 @@ export const AuthForm = () => {
       toast.success(data?.message);
 
       if (isSignUp) {
-        navigate("/login");
+        router.push("/login");
       } else {
         localStorage.setItem("accessToken", data?.accessToken);
         localStorage.setItem("refreshToken", data?.refreshToken);
         localStorage.setItem("userId", data?.user?.id);
         localStorage.setItem("role", "admin");
 
-        navigate("/admin/dashboard");
+        router.push("/admin/dashboard");
       }
     } catch (error) {
       console.error("ERROR -:", error);
