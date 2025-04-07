@@ -1,7 +1,6 @@
 import { TaskFeature1, TaskFeature2 } from "@/assets";
 import Image from "next/image";
 
-
 export default function TaskManagementSection() {
     return (
         <section className="bg-gray-50 dark:bg-gray-800">

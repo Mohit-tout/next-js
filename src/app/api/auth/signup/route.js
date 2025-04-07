@@ -1,6 +1,6 @@
 import { signUp } from "@/lib/services/auth";
 
-export const POST = async (request: Request) => {
+export const POST = async (request) => {
   try {
     const body = await request.json();
     if (!body?.email || !body?.password || !body?.name) {
@@ -13,8 +13,8 @@ export const POST = async (request: Request) => {
     }
     return new Response(JSON.stringify(response), { status: 200 });
   }
-  catch (err) {
-    return new Response(JSON.stringify({ message: 'Internal Server Error !!!',error:err }), { status: 500 })
+  catch {
+    return new Response(JSON.stringify({ message: 'Internal Server Error !!!' }), { status: 500 })
   }
 
 }

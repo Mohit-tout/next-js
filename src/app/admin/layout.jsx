@@ -1,10 +1,9 @@
 "use client";
-import { ReactNode } from "react";
 import Sidebar from "@/components/Sidebar";
 import ProtectedRoute from "./protected-route";
 import AdminHeader from "@/components/AdminHeader";
 
-const AdminLayout = ({ children }: { children: ReactNode }) => {
+const AdminLayout = ({ children }) => {
     return (
         <ProtectedRoute>
             <div className="antialiased bg-gray-200">

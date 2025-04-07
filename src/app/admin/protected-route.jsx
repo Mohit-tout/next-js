@@ -2,9 +2,9 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+const ProtectedRoute = ({ children }) => {
     const router = useRouter();
-    const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
+    const [isAuthorized, setIsAuthorized] = useState(null);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -12,7 +12,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
             const isAdmin = localStorage.getItem("role") === "admin";
 
             if (!accessToken || !isAdmin) {
-                router.push("/login"); 
+                router.push("/login");
             } else {
                 setIsAuthorized(true);
             }

@@ -6,7 +6,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { UserRound } from "lucide-react";
 
-const Testimonials: React.FC = () => {
+const Testimonials = () => {
     const settings = {
         dots: true,
         infinite: true,

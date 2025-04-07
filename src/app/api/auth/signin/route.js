@@ -1,7 +1,7 @@
 import { setRefreshTokenCookie } from "@/lib/cookies";
 import { signIn } from "@/lib/services/auth";
 
-export const POST = async (request: Request) => {
+export const POST = async (request) => {
   try {
     const { email, password } = await request.json();
 
@@ -29,7 +29,7 @@ export const POST = async (request: Request) => {
       status: 200,
       headers: { "Set-Cookie": refreshTokenCookie }
     });
-  } catch (err) {
-    return new Response(JSON.stringify({ message: "Internal Server Error" ,error:err}), { status: 500 });
+  } catch  {
+    return new Response(JSON.stringify({ message: "Internal Server Error" }), { status: 500 });
   }
 };
