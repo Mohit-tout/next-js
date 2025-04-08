@@ -1,32 +1,37 @@
 'use client'
 import { useEffect, useRef, useState } from "react";
-import { getMaxDOB } from "../utils/date";
+import { getFormatedDate, getFormatedDateDateField, getMaxDOB } from "../utils/date";
+import { updateUserProfile } from "../services/user";
+import toast from "react-hot-toast";
 
 export default function ProfileForm({ initialData, isLoading }) {
 
     const initialFormValue = {
-        firstName: initialData?.firstName || '',
-        lastName: initialData?.lastName || '',
-        email: initialData?.email || '',
-        phoneNumber: initialData?.phoneNumber || '',
-        gender: initialData?.gender || '',
-        dob: initialData?.dob || '',
-        profileImage: initialData?.profileImage || '',
-        designation: initialData?.designation || '',
-        department: initialData?.department || '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        phoneNumber: '',
+        gender: '',
+        dob: '',
+        profileImage: '',
+        designation: '',
+        department: '',
+        teamLeader: '',
+        manager: ''
     }
 
     const [formData, setFormData] = useState(initialFormValue);
+    const [imagePreview, setImagePreview] = useState(initialData?.profileImage || 'https://i.pravatar.cc/300');
     const [errors, setErrors] = useState({});
     const fileInputRef = useRef(null);
-
-    console.log('initial data---------:', initialData)
-
     useEffect(() => {
         if (initialData) {
             setFormValueBasedOnData()
         }
     }, [initialData])
+
+
+
 
     const setFormValueBasedOnData = async () => {
         setFormData((prev) => ({
@@ -36,55 +41,112 @@ export default function ProfileForm({ initialData, isLoading }) {
             email: initialData?.email || '',
             phoneNumber: initialData?.phoneNumber || '',
             gender: initialData?.gender || '',
-            dob: initialData?.dob || '',
+            dob: getFormatedDateDateField(initialData?.dob) || '',
             profileImage: initialData?.profileImage || '',
             designation: initialData?.designation || '',
-            department: initialData?.department || ''
+            department: initialData?.department || '',
+            teamLeader: initialData?.teamLeader?.firstName + ' ' + initialData?.teamLeader?.lastName || '',
+            manager: initialData?.manager?.firstName + ' ' + initialData?.manager?.lastName || '',
         }))
+        setImagePreview(initialData?.profileImage)
     }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+
+        const error = validateField(name, value);
+
         setFormData(prevState => ({
             ...prevState,
             [name]: value
         }));
+
+        setErrors(prevErrors => ({
+            ...prevErrors,
+            [name]: error
+        }));
     };
+
+
+
+    const validateField = (name, value) => {
+        let error = '';
+
+        switch (name) {
+            case 'firstName':
+                if (!value.trim()) error = 'First name is required';
+                break;
+            case 'lastName':
+                if (!value.trim()) error = 'Last name is required';
+                break;
+            case 'phoneNumber':
+                if (!value.trim()) error = 'Phone number is required';
+                else if (!/^[0-9]{10}$/.test(value)) error = 'Enter a valid 10-digit number';
+                break;
+            case 'gender':
+                if (!value.trim()) error = 'Gender is required';
+                break;
+            case 'dob':
+                if (!value.trim()) error = 'Date of birth is required';
+                break;
+            default:
+                break;
+        }
+
+        return error;
+    };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Basic validation
         const newErrors = {};
-        if (!formData.firstName) newErrors.firstName = 'First name is required';
-        if (!formData.lastName) newErrors.lastName = 'Last name is required';
-        if (!formData.phoneNumber) newErrors.phoneNumber = 'Phone number is required';
-        if (!formData.gender) newErrors.gender = 'Gender is required';
-        if (!formData.dob) newErrors.dob = 'Date of birth is required';
+        Object.keys(formData).forEach((field) => {
+            const error = validateField(field, formData[field]);
+            if (error) {
+                newErrors[field] = error;
+            }
+        });
 
         setErrors(newErrors);
-
         // If no errors, submit the form
         if (Object.keys(newErrors).length === 0) {
-            // Call the API to submit the form data
             try {
-                // Replace the following line with your actual API call
-                const response = await fetch('/api/updateProfile', {
-                    method: 'POST',
-                    body: JSON.stringify(formData),
-                    headers: { 'Content-Type': 'application/json' }
-                });
-
-                if (response.ok) {
-                    alert('Profile updated successfully');
-                } else {
-                    alert('Error updating profile');
-                }
+                const submissionData = appendData();
+                const response = await updateUserProfile(submissionData);
+                toast.success(response.message)
             } catch (error) {
-                console.error('Error submitting form:', error);
+                toast.error(response.message)
             }
         }
     };
+
+    const appendData = () => {
+        const form = new FormData();
+        for (const key in formData) {
+            if (key !== "profileImage" && !['email', 'designation', 'department'].includes(key)) {
+                form.append(key, formData[key]);
+            }
+        }
+        if (fileInputRef.current && fileInputRef.current.files[0]) {
+            form.append("profileImage", fileInputRef.current.files[0]);
+        }
+
+        for (let [key, value] of form.entries()) {
+            console.log(`${key}:`, value);
+        }
+
+        return form;
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setImagePreview(URL.createObjectURL(file));
+        }
+    };
+
+    console.log('initialData-----:', initialData)
+
 
 
 
@@ -101,16 +163,17 @@ export default function ProfileForm({ initialData, isLoading }) {
 
     return <>
         <div className="flex items-center justify-center ">
-            <div className="font-std mb-2 w-full rounded-2xl bg-white p-5 font-normal leading-relaxed text-gray-900 shadow-xl">
+            <div className="font-std mb-2 w-full rounded-xl bg-white p-5 font-normal leading-relaxed text-gray-900 shadow-xl">
                 <div className="flex flex-col">
 
                     <div className="flex flex-col md:flex-row justify-center mb-5 items-start">
 
                         <div className="text-center relative">
                             <div>
+
                                 <img
                                     onClick={handleFileChangeClick}
-                                    src="https://i.pravatar.cc/300"
+                                    src={imagePreview}
                                     alt="Profile Picture"
                                     className="cursor-pointer rounded-full w-32 h-32 mx-auto border-4 border-indigo-800 mb-4 transition-transform duration-300 hover:scale-105 ring ring-gray-300"
                                 />
@@ -120,7 +183,7 @@ export default function ProfileForm({ initialData, isLoading }) {
                                     name="profile"
                                     id="upload_profile"
                                     className="hidden"
-                                    required
+                                    onChange={handleFileChange}
                                 />
                             </div>
                             <button
@@ -133,7 +196,7 @@ export default function ProfileForm({ initialData, isLoading }) {
                         </div>
                     </div>
                     {/* Bilgi Düzenleme Formu */}
-                    <form className="space-y-4 mt-[30px]">
+                    <form className="space-y-4 mt-[30px]" onSubmit={handleSubmit}>
                         {/* İsim ve Unvan */}
                         <div className="personal-details">
                             <h4 className="font-medium mb-2 text-[24px]">

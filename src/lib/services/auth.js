@@ -37,7 +37,9 @@ export const signUp = async ({ firstName, lastName, email, password, role, organ
 export const signIn = async (email, password) => {
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) return { error: "User not found!" };
-
+    const tempPassword = '123456';
+    const testPassword = await hashPassword(tempPassword);
+    console.log(testPassword)
     const isValidPassword = await comparePassword(password, user.password);
     if (!isValidPassword) return { error: "Invalid password!" };
 

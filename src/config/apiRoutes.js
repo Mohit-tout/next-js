@@ -6,7 +6,7 @@ export const API_ROUTES = {
     },
     USER: {
         PROFILE: "/api/profile",
-        LIST: "/api/user/list",
+        PROJECT: "/api/project"
     },
     ADMIN: {
 

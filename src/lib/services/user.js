@@ -1,4 +1,8 @@
 import { prisma } from "@/lib/prisma";
+import { writeFile } from "fs/promises";
+import { v4 as uuidv4 } from 'uuid';
+import path from "path";
+import fs from "fs";
 
 export const getUserProfile = async (userId) => {
     try {
@@ -43,14 +47,7 @@ export const getUserProfile = async (userId) => {
 
 export const updateUserProfileWithImage = async (userId, formData) => {
     try {
-        const allowedFields = [
-            "firstName",
-            "lastName",
-            "gender",
-            "dob",
-            "phoneNumber",
-        ];
-
+        const allowedFields = ["firstName", "lastName", "gender", "dob", "phoneNumber"];
         const updateData = {};
 
         for (const field of allowedFields) {
@@ -60,7 +57,7 @@ export const updateUserProfileWithImage = async (userId, formData) => {
             }
         }
 
-        // 📦 Handle image
+        // Handle image
         const file = formData.get("profileImage");
         if (file && file.size > 0) {
             const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
@@ -72,7 +69,12 @@ export const updateUserProfileWithImage = async (userId, formData) => {
             const fileName = `${uuidv4()}-${file.name}`;
             const uploadDir = path.join(process.cwd(), "public", "uploads");
 
-            await writeFile(`${uploadDir}/${fileName}`, buffer);
+            // ✅ Create upload directory if it doesn't exist
+            if (!fs.existsSync(uploadDir)) {
+                fs.mkdirSync(uploadDir, { recursive: true });
+            }
+
+            await writeFile(path.join(uploadDir, fileName), buffer);
 
             updateData.profileImage = `/uploads/${fileName}`;
         }
@@ -88,7 +90,6 @@ export const updateUserProfileWithImage = async (userId, formData) => {
                 dob: true,
                 phoneNumber: true,
                 profileImage: true,
-                updatedAt: true
             }
         });
 

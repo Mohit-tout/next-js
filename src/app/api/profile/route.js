@@ -6,7 +6,6 @@ export const GET = async (request) => {
     const { user, error: authError, statusCode } = await getUserFromRequest(request);
 
     if (authError) {
-        console.log('authError---------:',authError)
         return new Response(JSON.stringify({ error: authError }), {
             status: statusCode || 401, // default to 401 if no statusCode is provided
         });
@@ -15,7 +14,6 @@ export const GET = async (request) => {
     const { data, error } = await getUserProfile(user.id);
 
     if (error) {
-        console.log('error---------:',error)
         return new Response(JSON.stringify({ message: error }), {
             status: 404, // Not Found
         });
