@@ -26,7 +26,8 @@ export const POST = async (request) => {
       status: 200,
       headers: { "Set-Cookie": refreshTokenCookie }
     });
-  } catch {
+  } catch(error) {
+    console.error("SIGNIN ERROR:", error); 
     return new Response(JSON.stringify({ message: "Internal Server Error" }), { status: 500 });
   }
 };

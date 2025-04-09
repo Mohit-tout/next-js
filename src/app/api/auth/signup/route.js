@@ -17,7 +17,7 @@ export const POST = async (request) => {
 
     return new Response(JSON.stringify(response), { status: 200 });
   } catch (error) {
-    console.error('Internal Error in POST /api/auth/signup:', error);
+    console.error("SIGNUP ERROR:", error); 
     return new Response(JSON.stringify({ message: 'Internal Server Error !!!' }), { status: 500 });
   }
 };

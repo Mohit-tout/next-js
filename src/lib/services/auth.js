@@ -27,7 +27,7 @@ export const signUp = async ({ firstName, lastName, email, password, role, organ
 
         return { message: "User registered successfully !!!", user: updatedUser };
     } catch (error) {
-        console.log('erroer---------:', error);
+        console.error("SIGNUP ERROR:", error); 
         return { error: "Registration failed!" };
     }
 };
