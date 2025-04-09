@@ -10,10 +10,10 @@ const menuItems = [
     { name: "Dashboard", icon: <Grid size={20} />, href: "/employee/dashboard" },
     { name: "My Profile", icon: <User size={20} />, href: "/employee/profile" },
     { name: "My Tasks", icon: <Clock size={20} />, href: "/employee/tasks" },
-    { name: "Team Tasks", icon: <ClipboardCheck size={20} />, href: "/employee/teamTask" }, // Updated icon
+    // { name: "Team Tasks", icon: <ClipboardCheck size={20} />, href: "/employee/teamTask" }, // Updated icon
     { name: "Team", icon: <Users size={20} />, href: "/employee/team" },
     { name: "Projects", icon: <Book size={20} />, href: "/employee/projects" },
-    { name: "Reports & Analytics", icon: <FileText size={20} />, href: "/employee/reports" },
+    // { name: "Reports & Analytics", icon: <FileText size={20} />, href: "/employee/reports" },
 ];
 
 const Sidebar = () => {
