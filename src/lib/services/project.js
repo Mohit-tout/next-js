@@ -1,26 +1,10 @@
 import { prisma } from "@/lib/prisma";
-import client from "../redis";
 import { paginate } from "../pagination";
 
 export const getProjects = async (userId, page = 1, pageSize = 10) => {
-  const cacheKeyProjects = `user_projects_${userId}_page_${page}_size_${pageSize}`;
-  const cacheKeyPagination = `user_projects_${userId}_pagination_${page}_size_${pageSize}`;
 
   try {
-    const cachedData = await client.get(cacheKeyProjects);
-    const cachedPagination = await client.get(cacheKeyPagination);
-
-    if (cachedData && cachedPagination) {
-      console.log('Data and pagination from cache');
-      return {
-        data: JSON.parse(cachedData),
-        error: null,
-        pagination: JSON.parse(cachedPagination),
-      };
-    }
-
     const { skip, take } = paginate(page, pageSize);
-
     const projects = await prisma.projectAssignment.findMany({
       where: { userId },
       skip,
@@ -54,9 +38,6 @@ export const getProjects = async (userId, page = 1, pageSize = 10) => {
         currentPage: page,
       };
 
-      await client.setEx(cacheKeyProjects, 60, JSON.stringify([]));
-      await client.setEx(cacheKeyPagination, 60, JSON.stringify(emptyPagination));
-
       return {
         data: [],
         error: null,
@@ -77,9 +58,6 @@ export const getProjects = async (userId, page = 1, pageSize = 10) => {
       qaUrl: project.qaUrl,
     }));
 
-    // Cache the result for projects and pagination for 1 hour
-    await client.setEx(cacheKeyProjects, 3600, JSON.stringify(formattedProjects));
-
     // Fetch the total count of projects to calculate total pages
     const totalProjects = await prisma.projectAssignment.count({
       where: { userId },
@@ -94,9 +72,6 @@ export const getProjects = async (userId, page = 1, pageSize = 10) => {
       currentPage: page,
       pageSize,
     };
-
-    // Cache pagination info
-    await client.setEx(cacheKeyPagination, 3600, JSON.stringify(pagination));
 
     return {
       data: formattedProjects,
