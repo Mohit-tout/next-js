@@ -52,6 +52,18 @@ h1 {
   font-weight: bold;
 }
 
+.fas.fa-flag.flag-high {
+  color: red;
+}
+
+.fas.fa-flag.flag-medium {
+  color: orange;
+}
+
+.fas.fa-flag.flag-low {
+  color: green;
+}
+
 .project {
   padding: 0.5rem;
   max-width: 75%;

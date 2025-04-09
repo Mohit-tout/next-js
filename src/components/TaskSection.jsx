@@ -1,289 +1,120 @@
-import './TaskSection.scss';  // Make sure the path is correct
-const TaskSection = () => {
+import { CalendarDays, Flag } from 'lucide-react';
+import './TaskSection.scss';
+import moment from 'moment';
+import { useEffect, useState } from 'react';
 
-    return <>
-        <main className="project">
-            <div className="project-tasks">
-                <div className="project-column">
-                    <div className="project-column-heading">
-                        <h2 className="project-column-heading__title todo-heading">Todo</h2>
-                        <button className="project-column-heading__options">
-                            <i className="fas fa-ellipsis-h" />
-                        </button>
-                    </div>
-                    <div className="task" draggable="true">
-                        <div className="task__tags">
-                            <span className="task__tag task__tag--copyright">Copywriting</span>
-                            <button className="task__options">
-                                <i className="fas fa-ellipsis-h" />
-                            </button>
-                        </div>
-                        <p>Konsep hero title yang menarik</p>
-                        <div className="task__stats">
-                            <span>
-                                <time dateTime="2021-11-24T20:00:00">
-                                    <i className="fas fa-flag" />
-                                    Nov 24
-                                </time>
-                            </span>
-                            <span>
-                                <i className="fas fa-comment" />3
-                            </span>
-                            <span>
-                                <i className="fas fa-paperclip" />7
-                            </span>
-                            <span className="task__owner" />
-                        </div>
-                    </div>
-                    <div className="task" draggable="true">
-                        <div className="task__tags">
-                            <span className="task__tag task__tag--design">UI Design</span>
-                            <button className="task__options">
-                                <i className="fas fa-ellipsis-h" />
-                            </button>
-                        </div>
-                        <p>Icon di section our services</p>
-                        <div className="task__stats">
-                            <span>
-                                <time dateTime="2021-11-24T20:00:00">
-                                    <i className="fas fa-flag" />
-                                    Nov 24
-                                </time>
-                            </span>
-                            <span>
-                                <i className="fas fa-comment" />2
-                            </span>
-                            <span>
-                                <i className="fas fa-paperclip" />5
-                            </span>
-                            <span className="task__owner" />
-                        </div>
-                    </div>
-                    <div className="task" draggable="true">
-                        <div className="task__tags">
-                            <span className="task__tag task__tag--copyright">Copywriting</span>
-                            <button className="task__options">
-                                <i className="fas fa-ellipsis-h" />
-                            </button>
-                        </div>
-                        <p>Konsep hero title yang menarik</p>
-                        <div className="task__stats">
-                            <span>
-                                <time dateTime="2021-11-24T20:00:00">
-                                    <i className="fas fa-flag" />
-                                    Nov 24
-                                </time>
-                            </span>
-                            <span>
-                                <i className="fas fa-comment" />2
-                            </span>
-                            <span>
-                                <i className="fas fa-paperclip" />3
-                            </span>
-                            <span className="task__owner" />
-                        </div>
-                    </div>
+const TaskSection = ({ tasks = [], updateTaskStatus }) => {
+    const [taskData, setTaskData] = useState(tasks);
+    const [draggedTask, setDraggedTask] = useState(null);
+
+    useEffect(() => {
+        setTaskData(tasks);
+    }, [tasks]);
+
+    const groupedTasks = {
+        TODO: taskData.filter(task => task.status === 'TODO'),
+        WORKING_ON: taskData.filter(task => task.status === 'WORKING_ON'),
+        DONE: taskData.filter(task => task.status === 'DONE'),
+    };
+
+    const priorityOrder = { high: 1, medium: 2, low: 3 };
+
+    const handleDragStart = (task) => {
+        setDraggedTask(task);
+    };
+
+    const handleDrop = async (newStatus) => {
+        if (!draggedTask || draggedTask.status === newStatus) return;
+
+        try {
+            // ✅ API call - Only if success, update local state
+            const success = await updateTaskStatus(draggedTask.id, newStatus);
+
+            if (success) {
+                const updatedTasks = taskData.map(t =>
+                    t.id === draggedTask.id ? { ...t, status: newStatus } : t
+                );
+                setTaskData(updatedTasks);
+            }
+        } catch (err) {
+            console.error('Failed to update status:', err);
+        } finally {
+            setDraggedTask(null); // always reset after drop
+        }
+    };
+
+    const renderTasks = (taskList) => {
+        const sortedTasks = [...taskList].sort((a, b) => {
+            const aPriority = priorityOrder[a.priority?.toLowerCase()] || 4;
+            const bPriority = priorityOrder[b.priority?.toLowerCase()] || 4;
+            return aPriority - bPriority;
+        });
+
+        return sortedTasks.map(task => (
+            <div
+                className="task"
+                draggable="true"
+                key={task.id}
+                onDragStart={() => handleDragStart(task)}
+            >
+                <div className="task__tags">
+                    <span className={`task__tag task__tag--${task.title?.toLowerCase().includes("copy") ? "copyright" : "design"}`}>
+                        {task.title}
+                    </span>
+                    <button className="task__options">
+                        <i className="fas fa-ellipsis-h" />
+                    </button>
                 </div>
-                <div className="project-column">
-                    <div className="project-column-heading">
-                        <h2 className="project-column-heading__title working-on-heading">Working On</h2>
-                        <button className="project-column-heading__options">
-                            <i className="fas fa-ellipsis-h" />
-                        </button>
-                    </div>
-                    <div className="task" draggable="true">
-                        <div className="task__tags">
-                            <span className="task__tag task__tag--design">UI Design</span>
-                            <button className="task__options">
-                                <i className="fas fa-ellipsis-h" />
-                            </button>
-                        </div>
-                        <p>Replace lorem ipsum text in the final designs</p>
-                        <div className="task__stats">
+                <p>{task.description}</p>
+                {task.project?.name && (
+                    <p className="text-sm text-gray-500 mb-1">
+                        Project: <strong>{task.project.name}</strong>
+                    </p>
+                )}
+                <div className="task__stats">
+                    <span>
+                        <time dateTime={task.dueDate} className='flex gap-2'>
+                            <CalendarDays size={17} />
                             <span>
-                                <time dateTime="2021-11-24T20:00:00">
-                                    <i className="fas fa-flag" />
-                                    Nov 24
-                                </time>
+                                {moment(task.dueDate).format('MMM DD, YYYY - hh:mm A')}
                             </span>
-                            <span>
-                                <i className="fas fa-comment" />5
-                            </span>
-                            <span>
-                                <i className="fas fa-paperclip" />5
-                            </span>
-                            <span className="task__owner" />
-                        </div>
-                    </div>
-                    <div className="task" draggable="true">
-                        <div className="task__tags">
-                            <span className="task__tag task__tag--illustration">
-                                Illustration
-                            </span>
-                            <button className="task__options">
-                                <i className="fas fa-ellipsis-h" />
-                            </button>
-                        </div>
-                        <p>Create and generate the custom SVG illustrations.</p>
-                        <div className="task__stats">
-                            <span>
-                                <time dateTime="2021-11-24T20:00:00">
-                                    <i className="fas fa-flag" />
-                                    Nov 24
-                                </time>
-                            </span>
-                            <span>
-                                <i className="fas fa-comment" />8
-                            </span>
-                            <span>
-                                <i className="fas fa-paperclip" />7
-                            </span>
-                            <span className="task__owner" />
-                        </div>
-                    </div>
-                    <div className="task" draggable="true">
-                        <div className="task__tags">
-                            <span className="task__tag task__tag--copyright">Copywriting</span>
-                            <button className="task__options">
-                                <i className="fas fa-ellipsis-h" />
-                            </button>
-                        </div>
-                        <p>Proof read the legal page and check for and loopholes</p>
-                        <div className="task__stats">
-                            <span>
-                                <time dateTime="2021-11-24T20:00:00">
-                                    <i className="fas fa-flag" />
-                                    Nov 24
-                                </time>
-                            </span>
-                            <span>
-                                <i className="fas fa-comment" />
-                                12
-                            </span>
-                            <span>
-                                <i className="fas fa-paperclip" />
-                                11
-                            </span>
-                            <span className="task__owner" />
-                        </div>
-                    </div>
-                    <div className="task" draggable="true">
-                        <div className="task__tags">
-                            <span className="task__tag task__tag--illustration">
-                                Illustration
-                            </span>
-                            <button className="task__options">
-                                <i className="fas fa-ellipsis-h" />
-                            </button>
-                        </div>
-                        <p>Create the landing page graphics for the hero slider.</p>
-                        <div className="task__stats">
-                            <span>
-                                <time dateTime="2021-11-24T20:00:00">
-                                    <i className="fas fa-flag" />
-                                    Nov 24
-                                </time>
-                            </span>
-                            <span>
-                                <i className="fas fa-comment" />4
-                            </span>
-                            <span>
-                                <i className="fas fa-paperclip" />8
-                            </span>
-                            <span className="task__owner" />
-                        </div>
-                    </div>
-                </div>
-                <div className="project-column">
-                    <div className="project-column-heading">
-                        <h2 className="project-column-heading__title done-heading">Done</h2>
-                        <button className="project-column-heading__options">
-                            <i className="fas fa-ellipsis-h" />
-                        </button>
-                    </div>
-                    <div className="task" draggable="true">
-                        <div className="task__tags">
-                            <span className="task__tag task__tag--illustration">
-                                Illustration
-                            </span>
-                            <button className="task__options">
-                                <i className="fas fa-ellipsis-h" />
-                            </button>
-                        </div>
-                        <p>Send Advert illustrations over to production company.</p>
-                        <div className="task__stats">
-                            <span>
-                                <time dateTime="2021-11-24T20:00:00">
-                                    <i className="fas fa-flag" />
-                                    Nov 24
-                                </time>
-                            </span>
-                            <span>
-                                <i className="fas fa-comment" />
-                                12
-                            </span>
-                            <span>
-                                <i className="fas fa-paperclip" />5
-                            </span>
-                            <span className="task__owner" />
-                        </div>
-                    </div>
-                    <div className="task" draggable="true">
-                        <div className="task__tags">
-                            <span className="task__tag task__tag--illustration">
-                                Illustration
-                            </span>
-                            <button className="task__options">
-                                <i className="fas fa-ellipsis-h" />
-                            </button>
-                        </div>
-                        <p>Dawn wants to move the text 3px to the right.</p>
-                        <div className="task__stats">
-                            <span>
-                                <time dateTime="2021-11-24T20:00:00">
-                                    <i className="fas fa-flag" />
-                                    Nov 24
-                                </time>
-                            </span>
-                            <span>
-                                <i className="fas fa-comment" />3
-                            </span>
-                            <span>
-                                <i className="fas fa-paperclip" />7
-                            </span>
-                            <span className="task__owner" />
-                        </div>
-                    </div>
-                    <div className="task" draggable="true">
-                        <div className="task__tags">
-                            <span className="task__tag task__tag--copyright">Copywriting</span>
-                            <button className="task__options">
-                                <i className="fas fa-ellipsis-h" />
-                            </button>
-                        </div>
-                        <p>Amend the contract details.</p>
-                        <div className="task__stats">
-                            <span>
-                                <time dateTime="2021-11-24T20:00:00">
-                                    <i className="fas fa-flag" />
-                                    Nov 24
-                                </time>
-                            </span>
-                            <span>
-                                <i className="fas fa-comment" />8
-                            </span>
-                            <span>
-                                <i className="fas fa-paperclip" />
-                                16
-                            </span>
-                            <span className="task__owner" />
-                        </div>
-                    </div>
+                        </time>
+                    </span>
+                    <span>
+                        <time dateTime={task.dueDate} className='flex gap-2'>
+                            <Flag size={17} color='rgb(255, 197, 61)' />
+                            <span>{task?.priority}</span>
+                        </time>
+                    </span>
                 </div>
             </div>
+        ));
+    };
+
+    return (
+        <main className="project">
+            <div className="project-tasks">
+                {['TODO', 'WORKING_ON', 'DONE'].map(status => (
+                    <div
+                        className="project-column"
+                        key={status}
+                        onDragOver={(e) => e.preventDefault()}
+                        onDrop={() => handleDrop(status)}
+                    >
+                        <div className="project-column-heading">
+                            <h2 className={`project-column-heading__title ${status.toLowerCase().replace('_', '-')}-heading`}>
+                                {status.replace('_', ' ')}
+                            </h2>
+                            <button className="project-column-heading__options">
+                                <i className="fas fa-ellipsis-h" />
+                            </button>
+                        </div>
+                        {renderTasks(groupedTasks[status])}
+                    </div>
+                ))}
+            </div>
         </main>
-      
-    </>
-}
+    );
+};
 
 export default TaskSection;

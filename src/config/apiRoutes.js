@@ -6,7 +6,9 @@ export const API_ROUTES = {
     },
     USER: {
         PROFILE: "/api/profile",
-        PROJECT: "/api/project"
+        PROJECT: "/api/project",
+        TASK: "/api/tasks",
+        UPDATE_TASK_STATUS:"/api/tasks"
     },
     ADMIN: {
 
