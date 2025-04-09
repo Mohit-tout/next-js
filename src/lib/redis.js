@@ -1,18 +1,14 @@
 // lib/redis.js
+import { createClient } from 'redis'; 
 
-import redis from 'redis';
-
-// Create a Redis client
-const client = redis.createClient({
-  url: process.env.REDIS_URL,  // Set this in your .env.local
+const client = createClient({
+  url: process.env.REDIS_URL, 
 });
 
-// Handle Redis errors
 client.on('error', (err) => {
   console.error('Redis Client Error', err);
 });
 
-// Connect to Redis
-client.connect();
+await client.connect(); 
 
 export default client;

@@ -1,4 +1,4 @@
-import { verifyToken, generateAccessToken } from "@/lib/jwt";
+import { generateAccessToken, verifyRefreshToken } from "@/lib/jwt";
 import { prisma } from "@/lib/prisma";
 
 export const POST = async (req) => {
@@ -9,7 +9,7 @@ export const POST = async (req) => {
     return new Response(JSON.stringify({ message: "No refresh token provided!" }), { status: 401 });
   }
 
-  const decoded = verifyToken(refreshToken, true);
+  const decoded = verifyRefreshToken(refreshToken, true);
   if (!decoded) {
     return new Response(JSON.stringify({ message: "Invalid refresh token!" }), { status: 403 });
   }
