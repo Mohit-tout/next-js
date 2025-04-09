@@ -1,9 +1,6 @@
-import { ENV } from "@/config/env.config";
-
-const baseUrl = ENV.BASE_URL;
-
 export const apiService = async (url, method = 'GET', body) => {
     try {
+
         const accessToken = localStorage.getItem('accessToken');
 
         // Setup headers, skip Content-Type for FormData
@@ -24,7 +21,7 @@ export const apiService = async (url, method = 'GET', body) => {
             body: body ? (isFormData ? body : JSON.stringify(body)) : undefined
         };
 
-        const response = await fetch(`${baseUrl}${url}`, options);
+        const response = await fetch(`${url}`, options);
         const data = await response.json();
 
         if (!response.ok) {
