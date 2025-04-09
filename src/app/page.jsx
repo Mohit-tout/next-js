@@ -19,8 +19,8 @@ export default function Home() {
     const role = localStorage.getItem("role");
     const accessToken = localStorage.getItem("accessToken");
 
-    if (role && accessToken) {
-      router.push("/admin/dashboard");
+    if (role === 'EMPLOYEE' && accessToken) {
+      router.push("/employee/dashboard");
     } else {
       setLoading(false); // Show the home page if role is not set
     }

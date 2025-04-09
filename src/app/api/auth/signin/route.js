@@ -16,12 +16,9 @@ export const POST = async (request) => {
       return new Response(JSON.stringify({ message: response.error }), { status: 400 });
     }
     const refreshTokenCookie = setRefreshTokenCookie(response.refreshToken);
+    const user = response?.user;
     return new Response(JSON.stringify({
-      user: {
-        id: response.id,
-        email: response.email,
-        name: response?.name,
-      },
+      user: user,
       accessToken: response.accessToken,
       refreshToken: response.refreshToken,
       message: 'Sign In Sucessfully !!!'
@@ -29,7 +26,7 @@ export const POST = async (request) => {
       status: 200,
       headers: { "Set-Cookie": refreshTokenCookie }
     });
-  } catch  {
+  } catch {
     return new Response(JSON.stringify({ message: "Internal Server Error" }), { status: 500 });
   }
 };

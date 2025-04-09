@@ -6,15 +6,22 @@ export const apiService = async (url, method = 'GET', body) => {
     try {
         const accessToken = localStorage.getItem('accessToken');
 
+        // Setup headers, skip Content-Type for FormData
+        const isFormData = body instanceof FormData;
+
         const headers = {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`
         };
+
+        // Only set Content-Type for JSON
+        if (!isFormData) {
+            headers["Content-Type"] = "application/json";
+        }
 
         const options = {
             method,
             headers,
-            body: body ? JSON.stringify(body) : undefined
+            body: body ? (isFormData ? body : JSON.stringify(body)) : undefined
         };
 
         const response = await fetch(`${baseUrl}${url}`, options);

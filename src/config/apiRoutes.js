@@ -5,9 +5,8 @@ export const API_ROUTES = {
         LOGOUT: "/auth/logout",
     },
     USER: {
-        PROFILE: "/api/user/profile",
-        UPDATE: "/api/user/update",
-        LIST: "/api/user/list",
+        PROFILE: "/api/profile",
+        PROJECT: "/api/project"
     },
     ADMIN: {
 

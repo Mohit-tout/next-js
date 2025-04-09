@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { usePathname,useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { loginUser, registerUser } from "@/services/auth";
 import { LogoImageForBg } from "@/assets";
+import Image from "next/image";
 
 export const AuthForm = () => {
   const pathname = usePathname();
@@ -13,12 +14,13 @@ export const AuthForm = () => {
   const isSignUp = pathname === "/signup";
 
   const [formData, setFormData] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
   });
 
-  const [errors, setErrors] = useState({ name: "", email: "", password: "" });
+  const [errors, setErrors] = useState({ firstName: "", lastName: "", email: "", password: "" });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,7 +40,11 @@ export const AuthForm = () => {
       if (!value) return "Password is required!";
       if (value.length < 6) return "Password must be at least 6 characters!";
     }
-    if (name === "name" && isSignUp) {
+    if (name === "firstName" && isSignUp) {
+      if (!value) return "Full name is required!";
+      if (!/^[a-zA-Z\s]+$/.test(value)) return "Full name can only contain letters and spaces!";
+    }
+    if (name === "lastName" && isSignUp) {
       if (!value) return "Full name is required!";
       if (!/^[a-zA-Z\s]+$/.test(value)) return "Full name can only contain letters and spaces!";
     }
@@ -47,7 +53,8 @@ export const AuthForm = () => {
 
   const validateForm = () => {
     const newErrors = {
-      name: isSignUp ? validateField("name", formData.name || "") : "",
+      firstName: isSignUp ? validateField("firstName", formData.firstName || "") : "",
+      lastName: isSignUp ? validateField("lastName", formData.lastName || "") : "",
       email: validateField("email", formData.email),
       password: validateField("password", formData.password),
     };
@@ -61,7 +68,15 @@ export const AuthForm = () => {
     if (!validateForm()) return;
 
     try {
-      const data = isSignUp ? await registerUser(formData) : await loginUser(formData);
+      const signUpFormData = isSignUp ? {
+        firstName: formData?.firstName,
+        lastName: formData?.lastName,
+        email: formData?.email,
+        password: formData?.password,
+        organizationId: "2dd67cc0-5cf0-48c3-807b-a36ee65cfb3c",
+        role: "EMPLOYEE"
+      } : formData
+      const data = isSignUp ? await registerUser(signUpFormData) : await loginUser(formData);
       toast.success(data?.message);
 
       if (isSignUp) {
@@ -70,9 +85,9 @@ export const AuthForm = () => {
         localStorage.setItem("accessToken", data?.accessToken);
         localStorage.setItem("refreshToken", data?.refreshToken);
         localStorage.setItem("userId", data?.user?.id);
-        localStorage.setItem("role", "admin");
-
-        router.push("/admin/dashboard");
+        localStorage.setItem("role", data?.user?.role);
+        localStorage.setItem("fullName", data?.user?.fullName);
+        router.push("/employee/dashboard");
       }
     } catch (error) {
       console.error("ERROR -:", error);
@@ -80,11 +95,12 @@ export const AuthForm = () => {
     }
   };
 
+
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <a href="#" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-          <img className="w-8 h-8 mr-2" alt="logo" src={LogoImageForBg} />
+          <Image className="w-8 h-8 mr-2" alt="logo" src={LogoImageForBg} />
           Task Management Tool
         </a>
         <div className="w-full bg-white rounded-lg shadow dark:border sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -93,22 +109,38 @@ export const AuthForm = () => {
               {isSignUp ? "Create an account" : "Login to your account"}
             </h1>
             <form className="space-y-4" onSubmit={handleSubmit}>
-              {isSignUp && (
+              {isSignUp && (<>
                 <div>
                   <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    Full Name
+                    First Name
                   </label>
                   <input
                     type="text"
-                    name="name"
-                    value={formData.name}
+                    name="firstName"
+                    value={formData.firstName}
                     onChange={handleChange}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none"
-                    placeholder="Please enter full name"
+                    placeholder="Please enter first name"
                     required
                   />
-                  {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+                  {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
                 </div>
+                <div>
+                  <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    Last Name
+                  </label>
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none"
+                    placeholder="Please enter last name"
+                    required
+                  />
+                  {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
+                </div>
+              </>
               )}
               <div>
                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
