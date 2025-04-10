@@ -14,6 +14,7 @@ export const GET = async (request) => {
     const { data, error } = await getUserProfile(user.id);
 
     if (error) {
+      
         return new Response(JSON.stringify({ message: error }), {
             status: 404, // Not Found
         });

@@ -5,7 +5,7 @@ const ACCESS_TOKEN_SECRET = ENV.ACCESS_TOKEN_SECRET;
 const REFRESH_TOKEN_SECRET = ENV.REFRESH_TOKEN_SECRET;
 
 export function generateAccessToken(user) {
-    return jwt.sign({ id: user.id, email: user.email }, ACCESS_TOKEN_SECRET, { expiresIn: "1d" });
+    return jwt.sign({ id: user.id, email: user.email }, ACCESS_TOKEN_SECRET, { expiresIn: "2d" });
 }
 
 export function generateRefreshToken(user) {

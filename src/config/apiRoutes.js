@@ -8,7 +8,8 @@ export const API_ROUTES = {
         PROFILE: "/api/profile",
         PROJECT: "/api/project",
         TASK: "/api/tasks",
-        UPDATE_TASK_STATUS:"/api/tasks"
+        UPDATE_TASK_STATUS: "/api/tasks",
+        TEAMS: '/api/teams'
     },
     ADMIN: {
 

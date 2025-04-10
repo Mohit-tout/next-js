@@ -9,7 +9,7 @@ export const POST = async (req) => {
     return new Response(JSON.stringify({ message: "No refresh token provided!" }), { status: 401 });
   }
 
-  const decoded = verifyRefreshToken(refreshToken, true);
+  const decoded = verifyRefreshToken(refreshToken);
   if (!decoded) {
     return new Response(JSON.stringify({ message: "Invalid refresh token!" }), { status: 403 });
   }

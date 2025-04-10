@@ -21,7 +21,17 @@ export const apiService = async (url, method = 'GET', body) => {
             body: body ? (isFormData ? body : JSON.stringify(body)) : undefined
         };
 
-        const response = await fetch(`${url}`, options);
+        let response = await fetch(`${url}`, options);
+
+        if (response.status === 440) {
+            const newToken = await reGenerateAccessToken();
+            if (!newToken) throw new Error("Failed to refresh access token");
+            headers.Authorization = `Bearer ${newToken}`;
+            options.headers = headers;
+
+            response = await fetch(url, options);
+        }
+
         const data = await response.json();
 
         if (!response.ok) {
@@ -29,7 +39,40 @@ export const apiService = async (url, method = 'GET', body) => {
         }
 
         return data;
+
     } catch (err) {
         throw new Error(err?.message || "Request failed");
     }
 };
+
+
+
+const reGenerateAccessToken = async () => {
+    const refreshToken = localStorage.getItem('refreshToken');
+    try {
+        if (!refreshToken) {
+            // window.location.href = '/login'; // Redirect if no refresh token
+            return;
+        }
+
+        const response = await fetch('/api/auth/refresh-token', {
+            method: 'POST',
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data?.message || "Refresh failed");
+        }
+
+        // Save the new access token
+        localStorage.setItem('accessToken', data.accessToken);
+        return data.accessToken;
+
+    } catch (error) {
+        localStorage.clear();
+        console.error("Failed to refresh token:", error);
+        // window.location.href = '/login'; // Redirect on error
+    }
+};
+
