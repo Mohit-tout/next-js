@@ -2,8 +2,9 @@
 import { useEffect, useState } from "react";
 import ProfileForm from "../../../components/ProfileForm";
 import { fetchUserProfileData } from "../../../services/user";
+import { motion } from "framer-motion";
+import AnimatedLoader from '../../../components/AnimatedLoader'
 
-// This is the page component for server-side rendering with data fetching
 export default function EmployeeProfile() {
     const [initialData, setInitialData] = useState();
     const [isLoading, setIsLoading] = useState(true)
@@ -26,12 +27,23 @@ export default function EmployeeProfile() {
         }
     }
 
+    if (isLoading) return <AnimatedLoader />;
+
     return (
-        <div>
-            <ProfileForm
-                initialData={initialData}
-                isLoading={isLoading}
-            />
+        <div className="container mx-auto px-4 rounded-xl py-3 bg-white min-h-screen">
+            <motion.h1
+                className="text-3xl font-bold text-gray-800"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+            >
+                My Profile
+            </motion.h1>
+            <div>
+                <ProfileForm
+                    initialData={initialData}
+                />
+            </div>
         </div>
     );
 }

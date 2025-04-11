@@ -11,6 +11,9 @@ export const API_ROUTES = {
         UPDATE_TASK_STATUS: "/api/tasks",
         TEAMS: '/api/teams'
     },
+    EMPLOYEE: {
+        DASHBOARD: '/api/employee/dashboard'
+    },
     ADMIN: {
 
     }

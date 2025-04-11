@@ -2,6 +2,7 @@ import { CalendarDays, Flag } from 'lucide-react';
 import './TaskSection.scss';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 
 const TaskSection = ({ tasks = [], updateTaskStatus }) => {
     const [taskData, setTaskData] = useState(tasks);
@@ -27,7 +28,6 @@ const TaskSection = ({ tasks = [], updateTaskStatus }) => {
         if (!draggedTask || draggedTask.status === newStatus) return;
 
         try {
-            // ✅ API call - Only if success, update local state
             const success = await updateTaskStatus(draggedTask.id, newStatus);
 
             if (success) {
@@ -39,7 +39,7 @@ const TaskSection = ({ tasks = [], updateTaskStatus }) => {
         } catch (err) {
             console.error('Failed to update status:', err);
         } finally {
-            setDraggedTask(null); // always reset after drop
+            setDraggedTask(null);
         }
     };
 
@@ -50,12 +50,15 @@ const TaskSection = ({ tasks = [], updateTaskStatus }) => {
             return aPriority - bPriority;
         });
 
-        return sortedTasks.map(task => (
-            <div
+        return sortedTasks.map((task, index) => (
+            <motion.div
                 className="task"
                 draggable="true"
                 key={task.id}
                 onDragStart={() => handleDragStart(task)}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
             >
                 <div className="task__tags">
                     <span className={`task__tag task__tag--${task.title?.toLowerCase().includes("copy") ? "copyright" : "design"}`}>
@@ -75,31 +78,44 @@ const TaskSection = ({ tasks = [], updateTaskStatus }) => {
                     <span>
                         <time dateTime={task.dueDate} className='flex gap-2'>
                             <CalendarDays size={17} />
-                            <span>
-                                {moment(task.dueDate).format('MMM DD, YYYY - hh:mm A')}
-                            </span>
+                            <span>{moment(task.dueDate).format('MMM DD, YYYY - hh:mm A')}</span>
                         </time>
                     </span>
                     <span>
-                        <time dateTime={task.dueDate} className='flex gap-2'>
+                        <time className='flex gap-2'>
                             <Flag size={17} color='rgb(255, 197, 61)' />
                             <span>{task?.priority}</span>
                         </time>
                     </span>
                 </div>
-            </div>
+            </motion.div>
         ));
     };
 
     return (
         <main className="project">
-            <div className="project-tasks">
-                {['TODO', 'WORKING_ON', 'DONE'].map(status => (
-                    <div
+            <motion.div
+                className="project-tasks"
+                initial="hidden"
+                animate="visible"
+                variants={{
+                    hidden: {},
+                    visible: {
+                        transition: {
+                            staggerChildren: 0.1
+                        }
+                    }
+                }}
+            >
+                {['TODO', 'WORKING_ON', 'DONE'].map((status, i) => (
+                    <motion.div
                         className="project-column"
                         key={status}
                         onDragOver={(e) => e.preventDefault()}
                         onDrop={() => handleDrop(status)}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: i * 0.1 }}
                     >
                         <div className="project-column-heading">
                             <h2 className={`project-column-heading__title ${status.toLowerCase().replace('_', '-')}-heading`}>
@@ -110,9 +126,9 @@ const TaskSection = ({ tasks = [], updateTaskStatus }) => {
                             </button>
                         </div>
                         {renderTasks(groupedTasks[status])}
-                    </div>
+                    </motion.div>
                 ))}
-            </div>
+            </motion.div>
         </main>
     );
 };

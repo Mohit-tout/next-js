@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { loginUser, registerUser } from "@/services/auth";
 import { LogoImageForBg } from "@/assets";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 export const AuthForm = () => {
   const pathname = usePathname();
@@ -95,22 +96,38 @@ export const AuthForm = () => {
     }
   };
 
+  const animationVariant = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+  };
+
 
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <a href="#" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+        <motion.a
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          href="#"
+          className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
+        >
           <Image className="w-8 h-8 mr-2" alt="logo" src={LogoImageForBg} />
           Task Management Tool
-        </a>
-        <div className="w-full bg-white rounded-lg shadow dark:border sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+        </motion.a>
+        <motion.div
+          variants={animationVariant}
+          initial="hidden"
+          animate="visible"
+          className="w-full bg-white rounded-lg shadow dark:border sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
+        >
           <div className="p-6 space-y-4 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               {isSignUp ? "Create an account" : "Login to your account"}
             </h1>
             <form className="space-y-4" onSubmit={handleSubmit}>
               {isSignUp && (<>
-                <div>
+                <motion.div initial="hidden" animate="visible" variants={animationVariant}>
                   <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                     First Name
                   </label>
@@ -124,8 +141,8 @@ export const AuthForm = () => {
                     required
                   />
                   {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
-                </div>
-                <div>
+                </motion.div>
+                <motion.div initial="hidden" animate="visible" variants={animationVariant}>
                   <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                     Last Name
                   </label>
@@ -139,10 +156,11 @@ export const AuthForm = () => {
                     required
                   />
                   {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
-                </div>
+                </motion.div>
               </>
               )}
-              <div>
+              <motion.div initial="hidden" animate="visible" variants={animationVariant}>
+
                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                   Your email
                 </label>
@@ -156,8 +174,9 @@ export const AuthForm = () => {
                   required
                 />
                 {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-              </div>
-              <div>
+              </motion.div>
+              <motion.div initial="hidden" animate="visible" variants={animationVariant}>
+
                 <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                   Password
                 </label>
@@ -171,10 +190,15 @@ export const AuthForm = () => {
                   required
                 />
                 {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
-              </div>
-              <button type="submit" className="bg-blue-600 text-white w-full font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+              </motion.div>
+              <motion.button
+                type="submit"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="bg-blue-600 text-white w-full font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+              >
                 {isSignUp ? "Create an account" : "Login"}
-              </button>
+              </motion.button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 {isSignUp ? "Already have an account?" : "Don't have an account?"}
                 <a href={isSignUp ? "/login" : "/signup"} className="font-medium text-blue-600 hover:underline dark:text-primary-500">
@@ -183,7 +207,7 @@ export const AuthForm = () => {
               </p>
             </form>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
