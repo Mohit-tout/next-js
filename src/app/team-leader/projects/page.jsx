@@ -27,8 +27,6 @@ export default function Project() {
     }
 
     if (isLoading) return <AnimatedLoader />;
-
-
     return (
         <div className="container mx-auto px-4 rounded-xl py-3 bg-white min-h-screen">
             <motion.h1
