@@ -1,31 +1,54 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LogoImageForBg } from "@/assets";
 import Image from "next/image";
 import { LogOut, Menu, X, Grid, FileText, Clock, Book, Users, User, ClipboardCheck } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 
-const menuItems = [
-    { name: "Dashboard", icon: <Grid size={20} />, href: "/employee/dashboard" },
-    { name: "My Profile", icon: <User size={20} />, href: "/employee/profile" },
-    { name: "My Tasks", icon: <Clock size={20} />, href: "/employee/tasks" },
-    // { name: "Team Tasks", icon: <ClipboardCheck size={20} />, href: "/employee/teamTask" }, // Updated icon
-    { name: "Teams", icon: <Users size={20} />, href: "/employee/teams" },
-    { name: "Projects", icon: <Book size={20} />, href: "/employee/projects" },
-    // { name: "Reports & Analytics", icon: <FileText size={20} />, href: "/employee/reports" },
-];
+const menuByRole = {
+    EMPLOYEE: [
+        { name: "Dashboard", icon: <Grid size={20} />, href: "/employee/dashboard" },
+        { name: "My Profile", icon: <User size={20} />, href: "/employee/profile" },
+        { name: "My Tasks", icon: <Clock size={20} />, href: "/employee/tasks" },
+        { name: "Teams", icon: <Users size={20} />, href: "/employee/teams" },
+        { name: "Projects", icon: <Book size={20} />, href: "/employee/projects" },
+    ],
+    TEAM_LEADER: [
+        { name: "Dashboard", icon: <Grid size={20} />, href: "/team-leader/dashboard" },
+        { name: "My Profile", icon: <User size={20} />, href: "/team-leader/profile" },
+        { name: "Team Tasks", icon: <ClipboardCheck size={20} />, href: "/team-leader/team-tasks" },
+        { name: "My Tasks", icon: <Clock size={20} />, href: "/team-leader/my-tasks" },
+        { name: "Team Members", icon: <Users size={20} />, href: "/team-leader/members" },
+        { name: "Projects", icon: <Book size={20} />, href: "/team-leader/projects" },
+        { name: "Reports", icon: <FileText size={20} />, href: "/team-leader/reports" },
+    ],
+};
 
 const Sidebar = () => {
     const [sidemenu, setSidemenu] = useState(false);
+    const [menuItems, setMenuItems] = useState([]);
     const router = useRouter();
     const pathName = usePathname();
+    const [currentRole, setCurrentRole] = useState({
+        isAdmin: false,
+        isTeamLeader: false,
+        isManager: false,
+        isOrganization: false
+    })
 
+    const role = localStorage.getItem('role')
     const handleLogoOutClick = (e) => {
         e.preventDefault();
         localStorage.clear();
         router.push('/')
     }
+    useEffect(() => {
+        const role = localStorage.getItem('role');
+        if (role && menuByRole[role]) {
+            setMenuItems(menuByRole[role]);
+        }
+    }, []);
 
     const getActiveClassName = (path) => {
         return pathName === path ? 'text-blue-600 bg-gray-100' : 'text-gray-700 hover:text-blue-600 hover:bg-gray-100'

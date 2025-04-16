@@ -88,7 +88,12 @@ export const AuthForm = () => {
         localStorage.setItem("userId", data?.user?.id);
         localStorage.setItem("role", data?.user?.role);
         localStorage.setItem("fullName", data?.user?.fullName);
-        router.push("/employee/dashboard");
+        if (data?.user?.role === 'TEAM_LEADER') {
+          router.push("/team-leader/dashboard");
+        }
+        else {
+          router.push("/employee/dashboard");
+        }
       }
     } catch (error) {
       console.error("ERROR -:", error);

@@ -2,16 +2,16 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const ProtectedRoute = ({ children }) => {
+export const TeamLeaderProtectedRoute = ({ children }) => {
     const router = useRouter();
     const [isAuthorized, setIsAuthorized] = useState(null);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
             const accessToken = localStorage.getItem("accessToken");
-            const isEmployee = localStorage.getItem("role") === "EMPLOYEE";
+            const isTeamLeader = localStorage.getItem("role") === "TEAM_LEADER";
 
-            if (!accessToken || !isEmployee) {
+            if (!accessToken || !isTeamLeader) {
                 router.push("/login");
             } else {
                 setIsAuthorized(true);
@@ -25,5 +25,3 @@ const ProtectedRoute = ({ children }) => {
 
     return <>{children}</>;
 };
-
-export default ProtectedRoute;

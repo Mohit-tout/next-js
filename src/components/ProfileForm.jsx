@@ -4,6 +4,7 @@ import { getFormatedDateDateField, getMaxDOB } from "../utils/date";
 import { updateUserProfile } from "../services/user";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
+import { defaultBoyProfileImg, defaultGirlProfileImg } from "@/assets";
 
 export default function ProfileForm({ initialData }) {
 
@@ -22,7 +23,7 @@ export default function ProfileForm({ initialData }) {
     }
 
     const [formData, setFormData] = useState(initialFormValue);
-    const [imagePreview, setImagePreview] = useState(initialData?.profileImage || 'https://i.pravatar.cc/300');
+    const [imagePreview, setImagePreview] = useState(initialData?.profileImage ? initialData?.profileImage : initialData?.gender === 'female' ? defaultGirlProfileImg?.src : defaultBoyProfileImg?.src);
     const [errors, setErrors] = useState({});
     const fileInputRef = useRef(null);
     useEffect(() => {
@@ -30,8 +31,6 @@ export default function ProfileForm({ initialData }) {
             setFormValueBasedOnData()
         }
     }, [initialData])
-
-
 
 
     const setFormValueBasedOnData = async () => {
@@ -46,10 +45,14 @@ export default function ProfileForm({ initialData }) {
             profileImage: initialData?.profileImage || '',
             designation: initialData?.designation || '',
             department: initialData?.department || '',
-            teamLeader: initialData?.teamLeader?.firstName + ' ' + initialData?.teamLeader?.lastName || '',
-            manager: initialData?.manager?.firstName + ' ' + initialData?.manager?.lastName || '',
+            teamLeader: initialData?.teamLeader
+                ? `${initialData?.teamLeader?.firstName ?? ''} ${initialData?.teamLeader?.lastName ?? ''}`.trim() || null
+                : null,
+            manager: initialData?.manager
+                ? `${initialData?.manager?.firstName ?? ''} ${initialData?.manager?.lastName ?? ''}`.trim() || null
+                : null,
         }))
-        setImagePreview(initialData?.profileImage)
+        setImagePreview(initialData?.profileImage ? initialData?.profileImage : initialData?.gender === 'female' ? defaultGirlProfileImg?.src : defaultBoyProfileImg?.src)
     }
 
     const handleChange = (e) => {
@@ -150,9 +153,6 @@ export default function ProfileForm({ initialData }) {
         fileInputRef.current.click();
     };
 
-        
-
-
     return <>
         <div className="flex flex-col">
             <motion.div
@@ -161,8 +161,6 @@ export default function ProfileForm({ initialData }) {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.3, duration: 0.4 }}
             >
-                {/* <div className="flex flex-col md:flex-row justify-center mb-5 items-start"> */}
-
                 <div className="text-center relative">
                     <div>
                         <motion.img
@@ -394,7 +392,6 @@ export default function ProfileForm({ initialData }) {
                                 name="designation"
                                 type="text"
                                 id="designation"
-                                placeholder="Please enter designation"
                                 className="bg-gray-200 focus:outline-none focus:shadow-outline focus:bg-white w-full px-3 py-2 border border-gray-300 rounded-md"
                             />
                             <small></small>

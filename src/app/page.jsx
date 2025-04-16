@@ -17,19 +17,36 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const role = localStorage.getItem("role");
-    const accessToken = localStorage.getItem("accessToken");
+    const redirectUser = () => {
+      const role = localStorage.getItem("role");
+      const accessToken = localStorage.getItem("accessToken");
 
-    if (role === 'EMPLOYEE' && accessToken) {
-      router.push("/employee/dashboard");
-    } else {
-      setLoading(false);
+      if (!accessToken || !role) {
+        setLoading(false);
+        return;
+      }
+
+      const roleRoutes = {
+        EMPLOYEE: "/employee/dashboard",
+        TEAM_LEADER: "/team-leader/dashboard",
+      };
+
+      const targetRoute = roleRoutes[role];
+
+      if (targetRoute) {
+        router.replace(targetRoute); // `replace` avoids back-navigation to this page
+      } else {
+        setLoading(false);
+      }
+    };
+
+    // Ensure localStorage is accessible
+    if (typeof window !== "undefined") {
+      redirectUser();
     }
   }, [router]);
 
-  if (loading) {
-    return null;
-  }
+  if (loading) return null;
 
   // 👇 Different animation variants
   const variants = {

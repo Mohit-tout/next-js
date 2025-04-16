@@ -26,20 +26,19 @@ export default function Project() {
         }
     }
 
-       if (isLoading) return <AnimatedLoader />;
+    if (isLoading) return <AnimatedLoader />;
 
 
     return (
         <div className="container mx-auto px-4 rounded-xl py-3 bg-white min-h-screen">
-                <motion.h1
-                    className="text-3xl font-bold text-gray-800 mb-5"
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                >
-                    Projects
-                </motion.h1>
-
+            <motion.h1
+                className="text-3xl font-bold text-gray-800 mb-5"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+            >
+                Projects
+            </motion.h1>
             <AnimatePresence>
                 <motion.div
                     className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8"
@@ -57,7 +56,7 @@ export default function Project() {
                     }}
                 >
 
-                    {projects.map((project,index) => (
+                    {projects.map((project, index) => (
                         <motion.div
                             key={index}
                             initial={{ opacity: 0, y: 20 }}

@@ -1,11 +1,11 @@
-"use client";
-import ProtectedRoute from "./protected-route";
-import Sidebar from "../../components/Sidebar";
-import EmployeeHeader from "../../components/EmployeeHeader";
+'use client'
+import Sidebar from "@/components/Sidebar";
+import EmployeeHeader from "@/components/EmployeeHeader";
+import { TeamLeaderProtectedRoute } from "./protected-route"
+const TeamLeaderLayout = ({ children }) => {
 
-const EmployeeLayout = ({ children }) => {
     return (
-        <ProtectedRoute>
+        <TeamLeaderProtectedRoute>
             <div className="antialiased bg-gray-200">
                 <div className="h-screen flex overflow-hidden">
                     <Sidebar />
@@ -17,8 +17,8 @@ const EmployeeLayout = ({ children }) => {
                     </div>
                 </div>
             </div>
-        </ProtectedRoute>
-    );
-};
+        </TeamLeaderProtectedRoute>
+    )
+}
 
-export default EmployeeLayout;
+export default TeamLeaderLayout;
